@@ -2,49 +2,21 @@
   <div class="login">
     <h1 class="title">光谷智慧交通系统</h1>
     <div class="content">
-      <div class="login-form">
-        <el-form ref="ruleFormRef" :label-position="labelPosition" label-width="auto" :model="ruleForm" :rules="rules">
-          <el-form-item label="用户名：" prop="username">
-            <el-input v-model="ruleForm.username" placeholder="请输入用户名" />
-          </el-form-item>
-          <el-form-item label="密码：" prop="password">
-            <el-input v-model="ruleForm.password" type="password" show-password placeholder="请输入用户密码" />
-          </el-form-item>
-          <el-form-item label="验证码：" prop="verificationCode">
-            <el-input v-model="ruleForm.verificationCode" placeholder="请输入验证码" />
-          </el-form-item>
-        </el-form>
-        <el-checkbox label="30天免登录" size='large' />
-        <div class="btns">
-          <el-button type="primary" round>登录</el-button>
-          <el-button type="info" round>忘记密码</el-button>
-          <el-button round>注册</el-button>
-        </div>
-      </div>
+      <el-tabs v-model="activeName">
+        <el-tab-pane label="login" name="login">
+          <LoginForm />
+        </el-tab-pane>
+        <el-tab-pane label="register" name="register">register</el-tab-pane>
+        <el-tab-pane label="forgetpwd" name="forgetpwd">forgetpwd</el-tab-pane>
+      </el-tabs>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive } from "vue";
-import type { FormInstance, FormProps, FormRules } from "element-plus";
-const labelPosition = ref<FormProps['labelPosition']>('left');
-const ruleFormRef = ref<FormInstance>()
-const ruleForm = reactive({
-  username: '',
-  password: '',
-  verificationCode: ''
-})
-interface RuleForm {
-  username: string
-  password: string
-  verificationCode: string
-}
-const rules = reactive<FormRules<RuleForm>>({
-  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
-  password: [{ required: true, message: '请输入用户密码', trigger: 'blur' }],
-  verificationCode: [{ required: true, message: '请输入验证码', trigger: 'blur' }],
-})
+import { ref } from "vue";
+import LoginForm from "@/components/login/LoginForm.vue";
+const activeName = ref("login");
 </script>
 
 <style lang="scss" scoped>
@@ -53,9 +25,11 @@ const rules = reactive<FormRules<RuleForm>>({
   width: 1920px;
   height: 1080px;
   text-align: center;
-  background: linear-gradient(rgba(183, 194, 194, 0.3),
-      rgba(183, 194, 194, 0.7)),
-    no-repeat center/cover url("@/assets/img/background.jpg");
+  background: linear-gradient(
+      rgba(183, 194, 194, 0.3),
+      rgba(183, 194, 194, 0.7)
+    ),
+    no-repeat center/cover url("@/assets/img/login/background.jpg");
 
   .title {
     transform: translateY(200px);
@@ -64,53 +38,13 @@ const rules = reactive<FormRules<RuleForm>>({
   .content {
     display: flex;
     justify-content: center;
-
-    .login-form {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transform: translateY(350px);
-      position: relative;
-      width: 550px;
-      height: 300px;
-      padding: 20px 20px 20px 20px;
-      border-radius: 15px;
-      backdrop-filter: blur(2px);
-      background-color: rgba(200, 200, 200, 0.2);
-      box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
-
-      .el-form {
+    .el-tabs {
+      transform: translateY(300px);
+      .el-tab-pane{
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: 500px;
-      }
-
-      :deep(.el-form-item__label) {
-        color: black;
-        font-size: 18px;
-      }
-
-      .el-checkbox {
-        position: absolute;
-        left: 30px;
-        bottom: 5px;
-        color: black;
-      }
-
-      .btns {
-        display: flex;
-        justify-content: flex-end;
-        gap: 20px;
-        position: absolute;
-        right: 20px;
-        bottom: 10px;
-
-        .el-button {
-          width: 100px;
-          color: black;
-          font-size: 18px;
-        }
+        justify-content: center;
+        width: 600px;
+        height: 500px;
       }
     }
   }
