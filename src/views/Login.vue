@@ -4,10 +4,22 @@
     <div class="content">
       <el-tabs v-model="activeName">
         <el-tab-pane label="login" name="login">
-          <LoginForm />
+          <div class="guide" style="border-radius: 15px 0 0 15px">
+            <h2>欢迎加入我们！</h2>
+            <p @click="activeName = 'register'">去注册</p>
+          </div>
+          <LoginForm @forget-pwd="activeName = 'forgetpwd'" />
         </el-tab-pane>
-        <el-tab-pane label="register" name="register">register</el-tab-pane>
-        <el-tab-pane label="forgetpwd" name="forgetpwd">forgetpwd</el-tab-pane>
+        <el-tab-pane label="register" name="register">
+          <RegisterForm />
+          <div class="guide" style="border-radius: 0 15px 15px 0">
+            <h2>已经拥有账号！</h2>
+            <p @click="activeName = 'login'">去登录</p>
+          </div>
+        </el-tab-pane>
+        <el-tab-pane label="forgetpwd" name="forgetpwd">
+          <ForgetPwd @click="activeName = 'login'" />
+        </el-tab-pane>
       </el-tabs>
     </div>
   </div>
@@ -16,6 +28,8 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import LoginForm from "@/components/login/LoginForm.vue";
+import RegisterForm from "@/components/login/RegisterForm.vue";
+import ForgetPwd from "@/components/login/ForgetPwd.vue";
 const activeName = ref("login");
 </script>
 
@@ -40,10 +54,13 @@ const activeName = ref("login");
     justify-content: center;
     .el-tabs {
       transform: translateY(300px);
-      .el-tab-pane{
+      :deep(.el-tabs__header) {
+        display: none;
+      }
+      .el-tab-pane {
         display: flex;
         justify-content: center;
-        width: 600px;
+        width: 850px;
         height: 500px;
       }
     }

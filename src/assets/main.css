@@ -1,4 +1,4 @@
-@import "./css/common.css" ;
+@import "./css/common.css";
 
 * {
   margin: 0;
@@ -19,4 +19,17 @@ body {
 #app {
   width: 1920px;
   height: 1080px;
+}
+h1 {
+  font-size: 38px;
+  color: #d8f0ff;
+  letter-spacing: 20px;
+  text-shadow: 0px 0px 30px #0091ff, 0px 0px 4px #0091ff;
+  opacity: 0.8;
+}
+h2 {
+  font-size: 24px;
+  letter-spacing: 10px;
+  color: #d8f0ff;
+  text-shadow: 0px 0px 30px black 0px 0px 4px black;
 }

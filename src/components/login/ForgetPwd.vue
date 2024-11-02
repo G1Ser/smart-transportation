@@ -1,5 +1,5 @@
 <template>
-  <div class="register-form">
+  <div class="forgetpwd-form">
     <el-form
       ref="ruleFormRef"
       :label-position="labelPosition"
@@ -7,9 +7,6 @@
       :model="ruleForm"
       :rules="rules"
     >
-      <el-form-item label="用户名：" prop="username">
-        <el-input v-model="ruleForm.username" placeholder="请输入用户名" />
-      </el-form-item>
       <el-form-item label="手机号：" prop="phone">
         <el-input v-model="ruleForm.phone" placeholder="请输入手机号" />
       </el-form-item>
@@ -29,42 +26,53 @@
           placeholder="再次输入用户密码"
         />
       </el-form-item>
+      <el-form-item label="验证码：" prop="verificationCode">
+        <el-input
+          v-model="ruleForm.verificationCode"
+          placeholder="请输入验证码"
+        />
+      </el-form-item>
     </el-form>
     <div class="btns">
-      <el-button type="primary" round>注册</el-button>
+      <el-button type="primary" round @click="emit('resetPwd')">
+        重置密码
+      </el-button>
     </div>
   </div>
 </template>
-
-<script lang="ts" setup>
+  
+  <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
-  username: "",
   phone: "",
   password: "",
   confirmPassword: "",
+  verificationCode: "",
 });
 interface RuleForm {
-  username: string;
   phone: string;
   password: string;
   confirmPassword: string;
+  verificationCode: string;
 }
 const rules = reactive<FormRules<RuleForm>>({
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   phone: [{ required: true, message: "请输入手机号", trigger: "blur" }],
   password: [{ required: true, message: "请输入用户密码", trigger: "blur" }],
   confirmPassword: [
     { required: true, message: "请输入用户密码", trigger: "blur" },
   ],
+  verificationCode: [
+    { required: true, message: "请输入验证码", trigger: "blur" },
+  ],
 });
+const emit = defineEmits(["resetPwd"]);
 </script>
-
+  
 <style lang="scss" scoped>
-.register-form {
+.forgetpwd-form {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -72,7 +80,7 @@ const rules = reactive<FormRules<RuleForm>>({
   width: 550px;
   height: 350px;
   padding: 20px 20px 20px 20px;
-  border-radius: 15px 0 0 15px;
+  border-radius: 15px 15px 15px 15px;
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 

@@ -1,6 +1,5 @@
 <template>
   <div class="login-form">
-    <div class="triangle"></div>
     <el-form
       ref="ruleFormRef"
       :label-position="labelPosition"
@@ -19,18 +18,13 @@
           placeholder="请输入用户密码"
         />
       </el-form-item>
-      <el-form-item label="验证码：" prop="verificationCode">
-        <el-input
-          v-model="ruleForm.verificationCode"
-          placeholder="请输入验证码"
-        />
-      </el-form-item>
     </el-form>
     <el-checkbox label="30天免登录" size="large" />
     <div class="btns">
       <el-button type="primary" round>登录</el-button>
-      <el-button type="info" round>忘记密码</el-button>
-      <el-button round>注册</el-button>
+      <el-button type="info" round @click="emit('forgetPwd')">
+        忘记密码
+      </el-button>
     </div>
   </div>
 </template>
@@ -43,20 +37,16 @@ const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
   username: "",
   password: "",
-  verificationCode: "",
 });
 interface RuleForm {
   username: string;
   password: string;
-  verificationCode: string;
 }
 const rules = reactive<FormRules<RuleForm>>({
   username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
   password: [{ required: true, message: "请输入用户密码", trigger: "blur" }],
-  verificationCode: [
-    { required: true, message: "请输入验证码", trigger: "blur" },
-  ],
 });
+const emit = defineEmits(["forgetPwd"]);
 </script>
 
 <style lang="scss" scoped>
@@ -66,9 +56,9 @@ const rules = reactive<FormRules<RuleForm>>({
   justify-content: center;
   position: relative;
   width: 550px;
-  height: 300px;
+  height: 350px;
   padding: 20px 20px 20px 20px;
-  border-radius: 15px;
+  border-radius: 0 15px 15px 0;
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
 
@@ -84,6 +74,7 @@ const rules = reactive<FormRules<RuleForm>>({
     font-size: 18px;
     &::before {
       color: rgb(255, 50, 50) !important;
+      margin-right: 6px !important;
     }
   }
 
