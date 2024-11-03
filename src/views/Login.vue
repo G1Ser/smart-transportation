@@ -3,22 +3,22 @@
     <h1 class="title">光谷智慧交通系统</h1>
     <div class="content">
       <el-tabs v-model="activeName">
-        <el-tab-pane label="login" name="login">
+        <el-tab-pane label="login" name="login" :key="new Date().getTime()">
           <div class="guide" style="border-radius: 15px 0 0 15px">
             <h2>欢迎加入我们！</h2>
             <p @click="activeName = 'register'">去注册</p>
           </div>
           <LoginForm @forget-pwd="activeName = 'forgetpwd'" />
         </el-tab-pane>
-        <el-tab-pane label="register" name="register">
+        <el-tab-pane label="register" name="register" :key="new Date().getTime()">
           <RegisterForm />
           <div class="guide" style="border-radius: 0 15px 15px 0">
             <h2>已经拥有账号！</h2>
             <p @click="activeName = 'login'">去登录</p>
           </div>
         </el-tab-pane>
-        <el-tab-pane label="forgetpwd" name="forgetpwd">
-          <ForgetPwd @click="activeName = 'login'" />
+        <el-tab-pane label="forgetpwd" name="forgetpwd" :key="new Date().getTime()">
+          <ForgetPwd @reset-pwd="activeName = 'login'" />
         </el-tab-pane>
       </el-tabs>
     </div>

@@ -1,27 +1,16 @@
 <template>
   <div class="login-form">
-    <el-form
-      ref="ruleFormRef"
-      :label-position="labelPosition"
-      label-width="auto"
-      :model="ruleForm"
-      :rules="rules"
-    >
+    <el-form ref="ruleFormRef" :label-position="labelPosition" label-width="auto" :model="ruleForm" :rules="rules">
       <el-form-item label="用户名：" prop="username">
         <el-input v-model="ruleForm.username" placeholder="请输入用户名" />
       </el-form-item>
       <el-form-item label="密码：" prop="password">
-        <el-input
-          v-model="ruleForm.password"
-          type="password"
-          show-password
-          placeholder="请输入用户密码"
-        />
+        <el-input v-model="ruleForm.password" type="password" show-password placeholder="请输入用户密码" />
       </el-form-item>
     </el-form>
     <el-checkbox label="30天免登录" size="large" />
     <div class="btns">
-      <el-button type="primary" round>登录</el-button>
+      <el-button type="primary" round @click="handleLogin()">登录</el-button>
       <el-button type="info" round @click="emit('forgetPwd')">
         忘记密码
       </el-button>
@@ -43,10 +32,17 @@ interface RuleForm {
   password: string;
 }
 const rules = reactive<FormRules<RuleForm>>({
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
-  password: [{ required: true, message: "请输入用户密码", trigger: "blur" }],
+  username: [{ required: true, message: "请输入用户名", trigger: "blur" },{ min: 5, max: 16, message: '用户名必须是5-16位非空字符', trigger: 'blur' }],
+  password: [{ required: true, message: "请输入用户密码", trigger: "blur" },{ min: 5, max: 16, message: '用户密码必须是5-16位非空字符', trigger: 'blur' }],
 });
 const emit = defineEmits(["forgetPwd"]);
+const handleLogin = () => {
+  if(!ruleFormRef.value) return
+  ruleFormRef.value.validate((valid) => {
+    if (!valid) return
+    console.log("调取后端接口，防抖")
+  })
+}
 </script>
 
 <style lang="scss" scoped>
@@ -72,6 +68,7 @@ const emit = defineEmits(["forgetPwd"]);
   :deep(.el-form-item__label) {
     color: black;
     font-size: 18px;
+
     &::before {
       color: rgb(255, 50, 50) !important;
       margin-right: 6px !important;
