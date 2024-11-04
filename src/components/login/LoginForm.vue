@@ -21,6 +21,8 @@
 <script lang="ts" setup>
 import { ref, reactive } from "vue";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
+import { userLogin } from '@/api/login'
+import type { LoginParamter } from "@/type/login";
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
@@ -32,15 +34,21 @@ interface RuleForm {
   password: string;
 }
 const rules = reactive<FormRules<RuleForm>>({
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" },{ min: 5, max: 16, message: '用户名必须是5-16位非空字符', trigger: 'blur' }],
-  password: [{ required: true, message: "请输入用户密码", trigger: "blur" },{ min: 5, max: 16, message: '用户密码必须是5-16位非空字符', trigger: 'blur' }],
+  username: [{ required: true, message: "请输入用户名", trigger: "blur" }, { min: 5, max: 16, message: '用户名必须是5-16位非空字符', trigger: 'blur' }],
+  password: [{ required: true, message: "请输入用户密码", trigger: "blur" }, { min: 5, max: 16, message: '用户密码必须是5-16位非空字符', trigger: 'blur' }],
 });
 const emit = defineEmits(["forgetPwd"]);
 const handleLogin = () => {
-  if(!ruleFormRef.value) return
+  if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid) => {
     if (!valid) return
-    console.log("调取后端接口，防抖")
+    const params: LoginParamter = {
+      username: ruleForm.username,
+      password: ruleForm.password
+    }
+    userLogin(params).then((res) => {
+      console.log(res)
+    })
   })
 }
 </script>

@@ -1,5 +1,6 @@
 <template>
   <div class="forgetpwd-form">
+    <el-link type="info" @click="emit('resetPwd')"><img :src="rollback"></img>返回</el-link>
     <el-form ref="ruleFormRef" :label-position="labelPosition" label-width="auto" :model="ruleForm" :rules="rules">
       <el-form-item label="手机号：" prop="phone">
         <el-input v-model="ruleForm.phone" placeholder="请输入手机号" />
@@ -26,7 +27,10 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
 import { ElMessage } from 'element-plus'
+import { forgetPwd } from '@/api/login'
+import type { ForgetpwdParamter } from "@/type/login";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
+import rollback from '@/assets/img/login/rollback.png';
 const code = ref('');
 const generateCode = () => {
   const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -69,7 +73,6 @@ const validatePwd = (rule: any, value: string, callback: any) => {
 const validateCode = (rule: any, value: string, callback: any) => {
   if (value !== code.value) {
     callback(new Error("验证码输入错误"))
-    ruleForm.verificationCode = ''
     generateCode()
   } else {
     callback()
@@ -92,11 +95,18 @@ const handleForgetPwd = () => {
   if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid) => {
     if (!valid) return
-    ElMessage({
-      message: '重置密码成功！',
-      type: 'success',
+    const data: ForgetpwdParamter = {
+      phone: ruleForm.phone,
+      new_password: ruleForm.password,
+      re_password: ruleForm.confirmPassword
+    }
+    forgetPwd(data).then(() => {
+      ElMessage({
+        message: '重置密码成功！',
+        type: 'success',
+      })
+      emit("resetPwd");
     })
-    emit("resetPwd");
   })
 }
 onMounted(() => {
@@ -116,6 +126,20 @@ onMounted(() => {
   border-radius: 15px 15px 15px 15px;
   background-color: rgba(255, 255, 255, 0.5);
   box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.3);
+
+  .el-link {
+    display: flex;
+    align-items: center;
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    width: 60px;
+    font-size: 16px;
+
+    img {
+      margin-right: 5px;
+    }
+  }
 
   .el-form {
     display: flex;
