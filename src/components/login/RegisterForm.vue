@@ -24,6 +24,8 @@
 import { ref, reactive } from "vue";
 import { ElMessage } from 'element-plus'
 import type { FormInstance, FormProps, FormRules } from "element-plus";
+import { userRegister } from '@/api/login'
+import type { RegisterParamter } from "@/type/login";
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
@@ -66,12 +68,18 @@ const handleRegister = () => {
   if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid) => {
     if (!valid) return
-    console.log("调取后端接口，防抖")
-    ElMessage({
-      message: '注册成功！',
-      type: 'success',
+    const data: RegisterParamter = {
+      username: ruleForm.username,
+      password: ruleForm.password,
+      phone: ruleForm.phone
+    }
+    userRegister(data).then(() => {
+      ElMessage({
+        message: '注册成功！',
+        type: 'success',
+      })
+      ruleFormRef.value.resetFields()
     })
-    ruleFormRef.value.resetFields()
   })
 }
 </script>
