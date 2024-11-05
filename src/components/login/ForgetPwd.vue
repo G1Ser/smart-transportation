@@ -31,6 +31,7 @@ import { forgetPwd } from "@/api/login";
 import type { ForgetpwdParamter } from "@/type/login";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
 import rollback from "@/assets/img/login/rollback.png";
+import { debounce } from "lodash-es";
 const code = ref("");
 const generateCode = () => {
   const characters =

@@ -23,6 +23,7 @@ import { ref, reactive } from "vue";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
 import { userLogin } from '@/api/login'
 import type { LoginParamter } from "@/type/login";
+import { debounce } from "lodash-es";
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
