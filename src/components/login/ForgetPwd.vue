@@ -26,21 +26,22 @@
 
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
-import { ElMessage } from 'element-plus'
-import { forgetPwd } from '@/api/login'
+import { ElMessage } from "element-plus";
+import { forgetPwd } from "@/api/login";
 import type { ForgetpwdParamter } from "@/type/login";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
-import rollback from '@/assets/img/login/rollback.png';
-const code = ref('');
+import rollback from "@/assets/img/login/rollback.png";
+const code = ref("");
 const generateCode = () => {
-  const characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  let result = '';
+  const characters =
+    "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  let result = "";
   for (let i = 0; i < 5; i++) {
     const randomIndex = Math.floor(Math.random() * characters.length);
     result += characters[randomIndex];
   }
   code.value = result;
-}
+};
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
@@ -58,60 +59,71 @@ interface RuleForm {
 const validatePhone = (rule: any, value: string, callback: any) => {
   const phonePattern = /^1[3456789][0-9]{9}$/;
   if (!phonePattern.test(value)) {
-    callback(new Error("请输入正确的手机号格式"))
+    callback(new Error("请输入正确的手机号格式"));
   } else {
-    callback()
+    callback();
   }
-}
+};
 const validatePwd = (rule: any, value: string, callback: any) => {
   if (value !== ruleForm.password) {
-    callback(new Error("两次输入密码不匹配"))
+    callback(new Error("两次输入密码不匹配"));
   } else {
-    callback()
+    callback();
   }
-}
+};
 const validateCode = (rule: any, value: string, callback: any) => {
   if (value !== code.value) {
-    callback(new Error("验证码输入错误"))
-    generateCode()
+    callback(new Error("验证码输入错误"));
+    generateCode();
   } else {
-    callback()
+    callback();
   }
-}
+};
 const rules = reactive<FormRules<RuleForm>>({
-  phone: [{ required: true, message: "请输入手机号", trigger: "blur" }, { validator: validatePhone, trigger: "blur" }],
-  password: [{ required: true, message: "请输入用户密码", trigger: "blur" }, { min: 5, max: 16, message: '用户密码必须是5-16位非空字符', trigger: 'blur' }],
+  phone: [
+    { required: true, message: "请输入手机号", trigger: "blur" },
+    { validator: validatePhone, trigger: "blur" },
+  ],
+  password: [
+    { required: true, message: "请输入用户密码", trigger: "blur" },
+    {
+      min: 5,
+      max: 16,
+      message: "用户密码必须是5-16位非空字符",
+      trigger: "blur",
+    },
+  ],
   confirmPassword: [
     { required: true, message: "请输入用户密码", trigger: "blur" },
-    { validator: validatePwd, trigger: "blur" }
+    { validator: validatePwd, trigger: "blur" },
   ],
   verificationCode: [
     { required: true, message: "请输入验证码", trigger: "blur" },
-    { validator: validateCode, trigger: "blur" }
+    { validator: validateCode, trigger: "blur" },
   ],
 });
 const emit = defineEmits(["resetPwd"]);
 const handleForgetPwd = () => {
-  if (!ruleFormRef.value) return
+  if (!ruleFormRef.value) return;
   ruleFormRef.value.validate((valid) => {
-    if (!valid) return
+    if (!valid) return;
     const data: ForgetpwdParamter = {
       phone: ruleForm.phone,
       new_password: ruleForm.password,
-      re_password: ruleForm.confirmPassword
-    }
+      re_password: ruleForm.confirmPassword,
+    };
     forgetPwd(data).then(() => {
       ElMessage({
-        message: '重置密码成功！',
-        type: 'success',
-      })
+        message: "重置密码成功！",
+        type: "success",
+      });
       emit("resetPwd");
-    })
-  })
-}
+    });
+  });
+};
 onMounted(() => {
   generateCode();
-})
+});
 </script>
 
 <style lang="scss" scoped>

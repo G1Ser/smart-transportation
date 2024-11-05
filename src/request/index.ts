@@ -16,7 +16,7 @@ http.interceptors.request.use(
     const url = config.url;
     const token = localStorage.getItem("token");
     if (whiteList.indexOf(url) === -1 && token) {
-      config.headers.token = token;
+      config.headers.Authorization = token;
     }
     return config;
   },

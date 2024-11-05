@@ -28,3 +28,10 @@ export const forgetPwd = (data: ForgetpwdParamter) => {
     data,
   });
 };
+
+export const getUserInfo = () => {
+  return http({
+    url: "/user/userInfo",
+    method: "GET",
+  });
+};
