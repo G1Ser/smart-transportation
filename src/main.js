@@ -8,6 +8,7 @@ import "element-plus/dist/index.css";
 import DataVVue3Plugin from "@kjgl77/datav-vue3";
 import * as echarts from "echarts";
 import Vcharts from "vue-echarts";
+import "animate.css";
 
 import App from "./App.vue";
 
