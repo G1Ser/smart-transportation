@@ -8,7 +8,6 @@
         <el-input v-model="ruleForm.password" type="password" show-password placeholder="请输入用户密码" />
       </el-form-item>
     </el-form>
-    <el-checkbox label="30天免登录" size="large" />
     <div class="btns">
       <el-button type="primary" round @click="handleLogin()">登录</el-button>
       <el-button type="info" round @click="emit('forgetPwd')">
@@ -22,8 +21,11 @@
 import { ref, reactive } from "vue";
 import type { FormInstance, FormProps, FormRules } from "element-plus";
 import { userLogin } from '@/api/login'
+import { ElMessage } from 'element-plus'
 import type { LoginParamter } from "@/type/login";
 import { debounce } from "lodash-es";
+import storageUtils from '@/utils/storageUtils'
+import router from "@/router";
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const ruleFormRef = ref<FormInstance>();
 const ruleForm = reactive({
@@ -39,17 +41,26 @@ const rules = reactive<FormRules<RuleForm>>({
   password: [{ required: true, message: "请输入用户密码", trigger: "blur" }, { min: 5, max: 16, message: '用户密码必须是5-16位非空字符', trigger: 'blur' }],
 });
 const emit = defineEmits(["forgetPwd"]);
+const debounceLogin = debounce(() => {
+  const params: LoginParamter = {
+    username: ruleForm.username,
+    password: ruleForm.password
+  }
+  userLogin(params).then((res) => {
+    if (!res) return
+    storageUtils.setItem("user_token", res)
+    ElMessage({
+      message: '登录成功!',
+      type: 'success',
+    })
+    router.push('/dashboard')
+  })
+}, 500)
 const handleLogin = () => {
   if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid) => {
     if (!valid) return
-    const params: LoginParamter = {
-      username: ruleForm.username,
-      password: ruleForm.password
-    }
-    userLogin(params).then((res) => {
-      console.log(res)
-    })
+    debounceLogin()
   })
 }
 </script>
@@ -87,13 +98,6 @@ const handleLogin = () => {
   :deep(.el-form-item__error) {
     margin-top: 4px;
     color: rgb(255, 50, 50);
-  }
-
-  .el-checkbox {
-    position: absolute;
-    left: 30px;
-    bottom: 5px;
-    color: black;
   }
 
   .btns {

@@ -123,13 +123,6 @@ const handleRegister = () => {
     color: rgb(255, 50, 50);
   }
 
-  .el-checkbox {
-    position: absolute;
-    left: 30px;
-    bottom: 5px;
-    color: black;
-  }
-
   .btns {
     display: flex;
     justify-content: flex-end;

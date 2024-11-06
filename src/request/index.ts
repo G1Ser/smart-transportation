@@ -1,6 +1,7 @@
 import axios from "axios";
 import globalConfig from "@/global.config";
 import { ElMessage } from "element-plus";
+import storageUtils from "@/utils/storageUtils";
 import router from "@/router";
 
 const http = axios.create({
@@ -14,7 +15,7 @@ http.interceptors.request.use(
   (config) => {
     const whiteList = globalConfig.whiteListApi;
     const url = config.url;
-    const token = localStorage.getItem("token");
+    const token = storageUtils.getItem("user_token");
     if (whiteList.indexOf(url) === -1 && token) {
       config.headers.Authorization = token;
     }
@@ -33,12 +34,10 @@ http.interceptors.response.use(
     if (status === 401) {
       ElMessage.error(message);
       router.push("/login");
-      return Promise.reject(new Error(message));
     } else if (status === 1) {
       ElMessage.error(message);
-      return Promise.reject(new Error(message));
     }
-    return res.data;
+    return res.data.data;
   },
   (error) => {
     return Promise.reject(new Error(error));
