@@ -34,6 +34,9 @@ http.interceptors.response.use(
       ElMessage.error(message);
       router.push("/login");
       return Promise.reject(new Error(message));
+    } else if (status === 1) {
+      ElMessage.error(message);
+      return Promise.reject(new Error(message));
     }
     return res.data;
   },

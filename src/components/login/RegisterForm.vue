@@ -65,22 +65,25 @@ const rules = reactive<FormRules<RuleForm>>({
     { validator: validatePwd, trigger: "blur" }
   ],
 });
+const debounceRegister = debounce(() => {
+  const data: RegisterParamter = {
+    username: ruleForm.username,
+    password: ruleForm.password,
+    phone: ruleForm.phone
+  }
+  userRegister(data).then(() => {
+    ElMessage({
+      message: '注册成功！',
+      type: 'success',
+    })
+    ruleFormRef.value.resetFields()
+  })
+}, 500)
 const handleRegister = () => {
   if (!ruleFormRef.value) return
   ruleFormRef.value.validate((valid) => {
     if (!valid) return
-    const data: RegisterParamter = {
-      username: ruleForm.username,
-      password: ruleForm.password,
-      phone: ruleForm.phone
-    }
-    userRegister(data).then(() => {
-      ElMessage({
-        message: '注册成功！',
-        type: 'success',
-      })
-      ruleFormRef.value.resetFields()
-    })
+    debounceRegister();
   })
 }
 </script>

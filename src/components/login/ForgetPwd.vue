@@ -104,22 +104,27 @@ const rules = reactive<FormRules<RuleForm>>({
   ],
 });
 const emit = defineEmits(["resetPwd"]);
+const debounceForgetPwd = debounce(() => {
+  const data: ForgetpwdParamter = {
+    phone: ruleForm.phone,
+    new_password: ruleForm.password,
+    re_password: ruleForm.confirmPassword,
+  };
+  forgetPwd(data).then(() => {
+    ElMessage({
+      message: "重置密码成功！",
+      type: "success",
+    });
+    setTimeout(() => {
+      emit("resetPwd");
+    }, 500)
+  });
+}, 500)
 const handleForgetPwd = () => {
   if (!ruleFormRef.value) return;
   ruleFormRef.value.validate((valid) => {
     if (!valid) return;
-    const data: ForgetpwdParamter = {
-      phone: ruleForm.phone,
-      new_password: ruleForm.password,
-      re_password: ruleForm.confirmPassword,
-    };
-    forgetPwd(data).then(() => {
-      ElMessage({
-        message: "重置密码成功！",
-        type: "success",
-      });
-      emit("resetPwd");
-    });
+    debounceForgetPwd();
   });
 };
 onMounted(() => {
