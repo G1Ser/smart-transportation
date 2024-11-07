@@ -1,14 +1,14 @@
 <template>
     <div claSS="dash-board">
         <el-container>
-            <el-aside width="400px">
+            <el-aside width="300px" style="padding: 2px 0 2px 0;">
                 <Aside />
             </el-aside>
             <el-container>
-                <el-header>
-                    <Header />
+                <el-header style="padding: 0 5px 0 5px !important;">
+                    <Header :user-info="userInfo" />
                 </el-header>
-                <el-main>
+                <el-main style="padding: 0 !important">
                     <Main />
                 </el-main>
             </el-container>
@@ -17,23 +17,22 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { userLogin } from '@/api/dashboard'
 import Aside from '@/components/dashboard/Aside.vue'
 import Header from '@/components/dashboard/Header.vue'
 import Main from '@/components/dashboard/Main.vue'
+const userInfo = ref()
 
 onMounted(async () => {
-    const res = await userLogin();
-    console.log(res);
-
+    userInfo.value = await userLogin();
+    console.log(userInfo.value)
 })
 </script>
 
 <style lang="scss" scoped>
 .dash-board {
-    width: 100%;
-    height: 100%;
-    border: 1px solid;
+    width: 1920px;
+    height: 1080px;
 }
 </style>

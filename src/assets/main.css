@@ -1,4 +1,6 @@
 @import "./css/login.css";
+@import "./css/font.css";
+@import "./css/animation.css";
 
 * {
   margin: 0;
@@ -32,32 +34,4 @@ h2 {
   letter-spacing: 10px;
   color: #d8f0ff;
   text-shadow: 0px 0px 30px black 0px 0px 4px black;
-}
-.bounceInDown {
-  animation: bounceInDown 1.5s 0.02s ease backwards;
-}
-@keyframes slideLeft {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-220%);
-  }
-}
-@keyframes slideRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(220%);
-  }
-}
-.slideOutLeft {
-  animation: slideLeft 1s 0.02s ease backwards;
-}
-.slideOutRight {
-  animation: slideRight 1s 0.02s ease backwards;
-}
-.zoomOut {
-  animation: zoomOut 1s 0.01s ease backwards;
 }

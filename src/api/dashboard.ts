@@ -1,7 +1,8 @@
 import http from "@/request";
+import { UserInfo } from "@/type/dashboard";
 export const userLogin = () => {
-    return http({
-      url: "/user/userInfo",
-      method: "GET",
-    });
-  };
+  return http<UserInfo>({
+    url: "/user/userInfo",
+    method: "GET",
+  });
+};

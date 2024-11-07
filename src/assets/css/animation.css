@@ -1,0 +1,28 @@
+@keyframes slideLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-220%);
+  }
+}
+@keyframes slideRight {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+.slideOutLeft {
+  animation: slideLeft 1s 0.02s ease backwards;
+}
+.slideOutRight {
+  animation: slideRight 1s 0.02s ease backwards;
+}
+.zoomOut {
+  animation: zoomOut 1s 0.01s ease backwards;
+}
+.bounceInDown {
+  animation: bounceInDown 1.5s 0.02s ease backwards;
+}
