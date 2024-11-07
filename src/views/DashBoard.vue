@@ -26,7 +26,6 @@ const userInfo = ref()
 
 onMounted(async () => {
     userInfo.value = await userLogin();
-    console.log(userInfo.value)
 })
 </script>
 
