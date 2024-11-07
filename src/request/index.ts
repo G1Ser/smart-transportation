@@ -34,8 +34,10 @@ http.interceptors.response.use(
     if (status === 401) {
       ElMessage.error(message);
       router.push("/login");
+      return Promise.reject(new Error("未授权"));
     } else if (status === 1) {
       ElMessage.error(message);
+      return Promise.reject(new Error("业务错误"));
     }
     return res.data.data;
   },

@@ -1,5 +1,5 @@
 <template>
-    <div claSS="dash-board">
+    <div class="dash-board">
         <el-container>
             <el-aside width="300px" style="padding: 2px 0 2px 0;">
                 <Aside />

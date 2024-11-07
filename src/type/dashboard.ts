@@ -5,3 +5,8 @@ export interface UserInfo {
   nickname: string;
   username: string;
 }
+export interface updatePwdParam {
+  old_password: string;
+  new_password: string;
+  re_password: string;
+}

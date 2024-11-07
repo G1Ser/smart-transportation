@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
         showCancelButton: false,
         showClose: false,
         customClass: "messageBox",
+        closeOnClickModal: false,
       }).then(() => {
         next({
           path: "/login",

@@ -5,18 +5,47 @@
             <p>{{ nickName }}</p>
         </div>
         <template #dropdown>
-            <el-dropdown-menu>
-                <el-dropdown-item><img :src="PassWord">修改密码</el-dropdown-item>
-                <el-dropdown-item><img :src="LogOut">退出登录</el-dropdown-item>
+            <el-dropdown-menu class="header-drop">
+                <el-dropdown-item @click="dialogFormVisible = true"><img :src="PassWord">修改密码</el-dropdown-item>
+                <el-dropdown-item @click="handleLogOut"><img :src="LogOut">退出登录</el-dropdown-item>
             </el-dropdown-menu>
         </template>
     </el-dropdown>
+    <el-dialog v-model="dialogFormVisible" title="修改密码" width="500" :modal="false" :align-center="true" center
+        :close-on-click-modal="false" class="change-pwd-dialog" modal-class="change-pwd-modal">
+        <el-form :model="form" :label-position="labelPosition" label-width="auto" ref="ruleFormRef" :rules="rules">
+            <el-form-item label="旧密码：" prop="old_password">
+                <el-input v-model="form.old_password" placeholder="请输入旧密码" />
+            </el-form-item>
+            <el-form-item label="新密码：" prop="new_password">
+                <el-input v-model="form.new_password" type="password" show-password placeholder="请输入新密码" />
+            </el-form-item>
+            <el-form-item label="确认密码：" prop="re_password">
+                <el-input v-model="form.re_password" type="password" show-password placeholder="请输入确认密码" />
+            </el-form-item>
+        </el-form>
+        <template #footer>
+            <div class="dialog-footer">
+                <el-button @click="dialogFormVisible = false">取消</el-button>
+                <el-button type="primary" @click="handleChangePwd()">
+                    确定
+                </el-button>
+            </div>
+        </template>
+    </el-dialog>
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from 'vue';
+import { ref, reactive, watch } from 'vue';
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { FormProps, FormInstance, FormRules } from "element-plus";
+import { updatePwd } from '@/api/dashboard'
+import { updatePwdParam } from '@/type/dashboard'
+import { debounce } from "lodash-es";
+import storageUtils from "@/utils/storageUtils"
 import PassWord from '@/assets/img/password.png'
 import LogOut from '@/assets/img/logout.png'
+import router from '@/router';
 
 const props = defineProps<{
     avatarUrl: string;
@@ -24,6 +53,89 @@ const props = defineProps<{
 }>();
 const nickName = ref('');
 const avatarUrl = ref('https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png')
+const dialogFormVisible = ref(false)
+const labelPosition = ref<FormProps["labelPosition"]>("left");
+const form = reactive({
+    old_password: '',
+    new_password: '',
+    re_password: ''
+})
+const ruleFormRef = ref<FormInstance>();
+interface RuleForm {
+    old_password: string;
+    new_password: string;
+    re_password: string;
+}
+const validatePwd = (rule: any, value: string, callback: any) => {
+    if (value !== form.new_password) {
+        callback(new Error("两次输入密码不匹配"))
+    } else {
+        callback()
+    }
+}
+const rules = reactive<FormRules<RuleForm>>({
+    old_password: [{ required: true, message: "请输入旧密码", trigger: "blur" }],
+    new_password: [{ required: true, message: "请输入新密码", trigger: "blur" }, { min: 5, max: 16, message: '新密码必须是5-16位非空字符', trigger: 'blur' }],
+    re_password: [
+        { required: true, message: "请输入确认密码", trigger: "blur" },
+        { validator: validatePwd, trigger: "blur" }
+    ],
+});
+const debounceChangePwd = debounce(() => {
+    const data: updatePwdParam = {
+        old_password: form.old_password,
+        new_password: form.new_password,
+        re_password: form.re_password
+    }
+    updatePwd(data).then(() => {
+        ElMessage({
+            message: '修改密码成功！',
+            type: 'success',
+        });
+        dialogFormVisible.value = false
+        ElMessageBox.confirm(
+            '请重新登录',
+            {
+                confirmButtonText: '确定',
+                showCancelButton: false,
+                showClose: false,
+                closeOnClickModal: false,
+                customClass: "messageBox",
+            }
+        )
+            .then(() => {
+                router.push("/login");
+                storageUtils.removeItem("user_token");
+            });
+        ruleFormRef.value.resetFields()
+    })
+}, 500)
+const handleChangePwd = () => {
+    if (!ruleFormRef.value) return
+    ruleFormRef.value.validate((valid) => {
+        if (!valid) return
+        debounceChangePwd()
+    })
+}
+const handleLogOut = () => {
+    ElMessageBox.confirm(
+        '确定要退出登录？',
+        {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            closeOnClickModal: false,
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            router.push("/login");
+            storageUtils.removeItem("user_token");
+            ElMessage({
+                message: '退出登录成功！',
+                type: 'success',
+            })
+        })
+}
 watch(() => [props.avatarUrl, props.nickName], () => {
     if (props.avatarUrl) {
         avatarUrl.value = props.avatarUrl;

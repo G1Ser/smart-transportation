@@ -1,4 +1,5 @@
 @import "./css/login.css";
+@import "./css/dashboard.css";
 @import "./css/font.css";
 @import "./css/animation.css";
 
@@ -9,8 +10,8 @@
 }
 html,
 body {
-  width: 100vw;
-  height: 100vh;
+  width: 100% !important;
+  height: 100%;
   overflow: hidden;
 }
 body {
