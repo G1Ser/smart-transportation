@@ -1,6 +1,11 @@
 <template>
     <dv-border-box-10>
         <div class="header">
+            <el-breadcrumb separator="/">
+                <el-breadcrumb-item>homepage</el-breadcrumb-item>
+                <el-breadcrumb-item>promotion list</el-breadcrumb-item>
+                <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
+            </el-breadcrumb>
             <UserAvatar :avatarUrl="avatarUrl" :nickName="nickName" />
         </div>
     </dv-border-box-10>
@@ -26,9 +31,9 @@ watch(() => props.userInfo, () => {
 .header {
     display: flex;
     align-items: center;
-    justify-content: end;
+    justify-content: space-between;
     width: 100%;
     height: 100%;
-    padding: 0 50px 0 5px;
+    padding: 0 50px 0 50px;
 }
 </style>

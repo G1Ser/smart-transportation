@@ -92,21 +92,23 @@ const debounceChangePwd = debounce(() => {
             message: '修改密码成功！',
             type: 'success',
         });
-        dialogFormVisible.value = false
-        ElMessageBox.confirm(
-            '请重新登录',
-            {
-                confirmButtonText: '确定',
-                showCancelButton: false,
-                showClose: false,
-                closeOnClickModal: false,
-                customClass: "messageBox",
-            }
-        )
-            .then(() => {
-                router.push("/login");
-                storageUtils.removeItem("user_token");
-            });
+        dialogFormVisible.value = false;
+        setTimeout(() => {
+            ElMessageBox.confirm(
+                '请重新登录',
+                {
+                    confirmButtonText: '确定',
+                    showCancelButton: false,
+                    showClose: false,
+                    closeOnClickModal: false,
+                    customClass: "messageBox",
+                }
+            )
+                .then(() => {
+                    router.push("/login");
+                    storageUtils.removeItem("user_token");
+                });
+        }, 500)
         ruleFormRef.value.resetFields()
     })
 }, 500)
