@@ -1,3 +1,75 @@
 {
-    
+  "asideData": [
+    {
+      "id": 1,
+      "icon": "MapLocation",
+      "name": "地图看板",
+      "path": "/MapBoard",
+      "children": [],
+      "index": 1,
+      "status": 0,
+      "type": 1
+    },
+    {
+      "id": 2,
+      "icon": "TrendCharts",
+      "name": "数据看板",
+      "path": "/DataBoard",
+      "children": [],
+      "index": 2,
+      "status": 0,
+      "type": 1
+    },
+    {
+      "id": 3,
+      "icon": "User",
+      "name": "账号管理",
+      "path": "/AccountManager",
+      "children": [],
+      "index": 3,
+      "status": 0,
+      "type": 1
+    },
+    {
+      "id": 4,
+      "icon": "Setting",
+      "name": "系统管理",
+      "path": "/SystemManager",
+      "children": [
+        {
+          "id": 1,
+          "name": "菜单管理",
+          "path": "/SystemManager/MenuManager",
+          "children": [],
+          "index": 1,
+          "status": 0,
+          "type": 1,
+          "icon": ""
+        },
+        {
+          "id": 2,
+          "name": "人员管理",
+          "path": "/SystemManager/UserManager",
+          "children": [],
+          "index": 2,
+          "status": 0,
+          "type": 1,
+          "icon": ""
+        },
+        {
+          "id": 3,
+          "name": "事件管理",
+          "path": "/SystemManager/EventManager",
+          "children": [],
+          "index": 3,
+          "status": 0,
+          "type": 1,
+          "icon": ""
+        }
+      ],
+      "index": 4,
+      "status": 0,
+      "type": 1
+    }
+  ]
 }

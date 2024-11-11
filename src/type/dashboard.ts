@@ -10,3 +10,13 @@ export interface updatePwdParam {
   new_password: string;
   re_password: string;
 }
+export interface asideData {
+  id: number;
+  icon: string;
+  name: string;
+  path: string;
+  index: number;
+  status: number;
+  type: number;
+  children: asideData[] | [];
+}
