@@ -1,7 +1,7 @@
 <template>
-    <dv-border-box-1>
-        <router-view />
-    </dv-border-box-1>
+    <div>
+        this is mapboard page!
+    </div>
 </template>
 
 <script lang="ts" setup>

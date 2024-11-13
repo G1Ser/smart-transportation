@@ -1,10 +1,10 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import storageUtils from "@/utils/storageUtils";
 import Login from "@/views/Login.vue";
 import { ElMessageBox } from "element-plus";
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: "/",
@@ -19,6 +19,13 @@ const router = createRouter({
       path: "/dashboard",
       name: "DashBoard",
       component: () => import("@/views/DashBoard.vue"),
+      children: [
+        {
+          path: "/mapboard",
+          name: "MapBoard",
+          component: () => import("@/views/MapBoard.vue"),
+        },
+      ],
     },
   ],
 });
@@ -27,6 +34,12 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const token = storageUtils.getItem("user_token");
   if (token) {
+    if (to.path === "/login") {
+      next({
+        path: "/dashboard",
+      });
+      return;
+    }
     next();
   } else {
     if (to.path == "/login") {
