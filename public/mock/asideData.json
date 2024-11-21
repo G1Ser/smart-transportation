@@ -22,16 +22,6 @@
     },
     {
       "id": 3,
-      "icon": "User",
-      "name": "账号管理",
-      "path": "/account-manager",
-      "children": [],
-      "index": 3,
-      "status": 0,
-      "type": 1
-    },
-    {
-      "id": 4,
       "icon": "Setting",
       "name": "系统管理",
       "path": "/system-manager",
@@ -67,7 +57,7 @@
           "icon": ""
         }
       ],
-      "index": 4,
+      "index": 3,
       "status": 0,
       "type": 1
     }
