@@ -5,10 +5,10 @@
                 <Aside />
             </el-aside>
             <el-container>
-                <el-header style="padding: 0 5px 0 5px !important;">
+                <el-header style="padding: 3px 5px 0 5px !important;">
                     <Header :user-info="userInfo" />
                 </el-header>
-                <el-main style="padding: 0 !important">
+                <el-main style="padding: 0 0 6px 0 !important">
                     <Main />
                 </el-main>
             </el-container>

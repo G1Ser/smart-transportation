@@ -9,4 +9,8 @@
 </script>
 
 <style lang="scss" scoped>
+:deep(.dv-border) {
+    pointer-events: none;
+    z-index: 1;
+}
 </style>
