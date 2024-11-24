@@ -1,5 +1,9 @@
 import http from "@/request";
-import { UserInfo, updatePwdParam } from "@/type/dashboard";
+import {
+  UserInfo,
+  updatePwdParam,
+  updateUserInfoParam,
+} from "@/type/dashboard";
 export const userLogin = () => {
   return http<UserInfo>({
     url: "/user/userInfo",
@@ -11,5 +15,12 @@ export const updatePwd = (data: updatePwdParam) => {
     url: "/user/updatePwd",
     method: "PATCH",
     data,
+  });
+};
+export const updateUserInfo = (params: updateUserInfoParam) => {
+  return http({
+    url: "/user/updateUserInfo",
+    method: "PUT",
+    params,
   });
 };

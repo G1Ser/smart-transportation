@@ -6,7 +6,7 @@
                 <el-breadcrumb-item>promotion list</el-breadcrumb-item>
                 <el-breadcrumb-item>promotion detail</el-breadcrumb-item>
             </el-breadcrumb>
-            <UserAvatar :avatarUrl="avatarUrl" :nickName="nickName" />
+            <UserAvatar :avatarUrl="avatarUrl" :nickName="nickName" @updateUserInfo="emits('updateUserInfo')" />
         </div>
     </dv-border-box-10>
 </template>
@@ -15,6 +15,7 @@
 import { UserInfo } from '@/type/dashboard';
 import { ref, watch } from 'vue';
 import UserAvatar from '@/components/UserAvatar.vue';
+const emits = defineEmits(['updateUserInfo'])
 const props = defineProps<{
     userInfo: UserInfo
 }>();

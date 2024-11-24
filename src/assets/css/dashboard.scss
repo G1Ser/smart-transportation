@@ -1,0 +1,16 @@
+.header-drop li {
+  display: flex;
+  width: 125px;
+  gap: 20px;
+}
+.form-dialog {
+  border-radius: 20px !important;
+  .el-dialog__title {
+    font-size: 20px;
+    letter-spacing: 5px;
+    font-weight: bold;
+  }
+}
+.dialog-modal {
+  background: rgba(0, 0, 0, 0.1);
+}

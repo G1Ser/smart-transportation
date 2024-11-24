@@ -6,7 +6,7 @@
             </el-aside>
             <el-container>
                 <el-header style="padding: 3px 5px 0 5px !important;">
-                    <Header :user-info="userInfo" />
+                    <Header :user-info="userInfo" @update-user-info="getUserInfo" />
                 </el-header>
                 <el-main style="padding: 0 0 6px 0 !important">
                     <Main />
@@ -23,9 +23,12 @@ import Aside from '@/components/dashboard/Aside.vue'
 import Header from '@/components/dashboard/Header.vue'
 import Main from '@/components/dashboard/Main.vue'
 const userInfo = ref()
-
-onMounted(async () => {
+const getUserInfo = async () => {
     userInfo.value = await userLogin();
+}
+
+onMounted(() => {
+    getUserInfo()
 })
 </script>
 

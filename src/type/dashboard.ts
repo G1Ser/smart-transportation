@@ -20,3 +20,7 @@ export interface asideData {
   type: number;
   children: asideData[] | [];
 }
+export interface updateUserInfoParam {
+  nickname?: string;
+  avatarUrl?: string;
+}
