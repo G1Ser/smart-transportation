@@ -8,7 +8,9 @@
             </el-form-item>
             <el-form-item label="用户头像：">
                 <div class="user-avatar">
-                    <img :src="avatarUrl || InitialAvatar" />
+                    <div style="height: 100%;display: flex;">
+                        <img :src="avatarUrl || InitialAvatar" />
+                    </div>
                     <div class="overlay">
                         <div class="icon">
                             <el-icon size="40" color="#fff" @click="dialogVisible = true">
@@ -78,13 +80,9 @@ onMounted(() => {
 
     .user-avatar {
         width: 350px;
-        height: 350px;
         position: relative;
 
         img {
-            position: absolute;
-            left: 0;
-            top: 0;
             width: 100%;
         }
 
@@ -94,8 +92,8 @@ onMounted(() => {
             position: absolute;
             left: 0;
             top: 0;
-            width: 350px;
-            height: 350px;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.4);
             opacity: 0;
             transition: opacity 0.3s;
@@ -138,6 +136,10 @@ onMounted(() => {
 
     .el-dialog__header {
         display: none;
+    }
+
+    .el-dialog__body {
+        display: flex;
     }
 
     img {
