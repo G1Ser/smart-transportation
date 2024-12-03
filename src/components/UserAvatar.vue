@@ -22,8 +22,8 @@
 import { ref, watch } from 'vue';
 import { ElMessage, ElMessageBox } from 'element-plus'
 import type { FormProps } from "element-plus";
-import { updatePwd, updateUserInfo } from '@/api/dashboard'
-import { updatePwdParam, updateUserInfoParam } from '@/type/dashboard'
+import { updatePwd, updateUserInfo, uploadFile } from '@/api/dashboard'
+import { updatePwdParam, updateUserInfoParam, uploadFileParam } from '@/type/dashboard'
 import storageUtils from "@/utils/storageUtils"
 import User from '@/assets/img/user-avatar/user.png'
 import PassWord from '@/assets/img/user-avatar/password.png'
@@ -43,16 +43,26 @@ const userFormVisible = ref(false)
 const pwdFormVisible = ref(false)
 const labelPosition = ref<FormProps["labelPosition"]>("left");
 const emits = defineEmits(['updateUserInfo'])
-const handleChangeUserInfo = (nickName, avatarUrl) => {
-    const params: updateUserInfoParam = {};
+const handleChangeUserInfo = async (nickName, avatarUrl) => {
+    let url = null;
+    if (avatarUrl !== props.avatarUrl) {
+        const res = await fetch(avatarUrl);
+        const blob = await res.blob();
+        const fileParams: uploadFileParam = {
+            folderName: 'user_avatar',
+            file: blob
+        }
+        url = await uploadFile(fileParams);
+    }
+    const InfoParams: updateUserInfoParam = {};
     if (nickName && nickName !== props.nickName) {
-        params.nickname = nickName
+        InfoParams.nickname = nickName
     }
-    if (avatarUrl && avatarUrl !== props.avatarUrl) {
-        params.avatarUrl = avatarUrl
+    if (url) {
+        InfoParams.avatarUrl = url
     }
-    if (Object.keys(params).length !== 0) {
-        updateUserInfo(params).then(() => {
+    if (Object.keys(InfoParams).length !== 0) {
+        updateUserInfo(InfoParams).then(() => {
             emits('updateUserInfo')
         })
     }

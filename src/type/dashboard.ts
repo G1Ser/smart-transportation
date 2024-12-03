@@ -24,3 +24,7 @@ export interface updateUserInfoParam {
   nickname?: string;
   avatarUrl?: string;
 }
+export interface uploadFileParam {
+  folderName: string;
+  file: Blob;
+}

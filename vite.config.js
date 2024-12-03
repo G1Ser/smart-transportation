@@ -17,7 +17,7 @@ export default defineConfig({
       "/home": {
         target: "http://122.51.167.25:8090",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/home/, ""),
+        rewrite: (path) => path.replace(/^\/home\/ubuntu/, ""),
       },
     },
   },
