@@ -12,18 +12,19 @@
 <script lang="ts" setup>
 import TreeMenu from '@/components/TreeMenu.vue'
 import router from '@/router';
-import { asideData } from '@/type/dashboard';
-import axios from 'axios';
 import { ref, onMounted } from 'vue';
-const TreeMenuData = ref<asideData[]>();
 const DefaultActive = ref<number | string>('');
+import { storeToRefs } from 'pinia';
+import { useRouterStore } from '@/store/router';
+const routerStore = useRouterStore();
+const { TreeMenuData } = storeToRefs(routerStore);
+const { getMenuData } = routerStore;
 const handleSelect = (index, indexPath) => {
     console.log(index);
     console.log(indexPath);
 }
 onMounted(async () => {
-    const res = await axios.get('./mock/asideData.json');
-    TreeMenuData.value = res.data.asideData;
+    await getMenuData();
     DefaultActive.value = TreeMenuData.value[0].children.length > 0 ? TreeMenuData.value[0].children[0].path : TreeMenuData.value[0].path;
     router.push(DefaultActive.value);
 })
