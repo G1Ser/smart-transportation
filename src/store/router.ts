@@ -12,7 +12,6 @@ export const useRouterStore = defineStore("router-store", () => {
   };
   const addRouter = (menuData) => {
     const modules = import.meta.glob("@/views/*/*.vue");
-    console.log(modules);
     const generateRoutes = (menuList) => {
       return menuList.map((item) => {
         const route = {
@@ -24,11 +23,27 @@ export const useRouterStore = defineStore("router-store", () => {
         return route;
       });
     };
-    const dynamicRoutes = generateRoutes(menuData);
-    console.log(dynamicRoutes);
+    const dynamicRoutes = [
+      {
+        path: "/dashboard",
+        name: "Dashboard",
+        component: () => import("@/views/DashBoard.vue"),
+        children: generateRoutes(menuData),
+      },
+    ];
+    // 将动态路由保存到 sessionStorage
+    sessionStorage.setItem("dynamicRoutes", JSON.stringify(dynamicRoutes));
     dynamicRoutes.forEach((route) => {
       router.addRoute(route);
     });
   };
-  return { TreeMenuData, getMenuData };
+  // 从 sessionStorage 加载动态路由
+  const loadDynamicRoutes = () => {
+    const savedRoutes = sessionStorage.getItem("dynamicRoutes");
+    const dynamicRoutes = JSON.parse(savedRoutes);
+    dynamicRoutes.forEach((route) => {
+      router.addRoute(route);
+    });
+  };
+  return { TreeMenuData, getMenuData, loadDynamicRoutes };
 });

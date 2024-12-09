@@ -19,14 +19,7 @@ const router = createRouter({
       path: "/dashboard",
       name: "DashBoard",
       component: () => import("@/views/DashBoard.vue"),
-      redirect: "/mapboard",
-      children: [
-        {
-          path: "/mapboard",
-          name: "MapBoard",
-          component: () => import("@/views/MapBoard/MapBoard.vue"),
-        },
-      ],
+      children: [],
     },
   ],
 });

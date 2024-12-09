@@ -27,7 +27,7 @@
       "icon": "Setting",
       "name": "系统管理",
       "path": "/system-manager",
-      "component": "/SystemManager/SystemManager.vue",
+      "component": "LAYOUT",
       "children": [
         {
           "id": 1,
