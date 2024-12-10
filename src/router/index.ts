@@ -2,6 +2,8 @@ import { createRouter, createWebHashHistory } from "vue-router";
 import storageUtils from "@/utils/storageUtils";
 import Login from "@/views/Login.vue";
 import { ElMessageBox } from "element-plus";
+import { storeToRefs } from "pinia";
+import { useRouterStore } from "@/store/router";
 
 const router = createRouter({
   history: createWebHashHistory(),
@@ -19,13 +21,13 @@ const router = createRouter({
       path: "/dashboard",
       name: "DashBoard",
       component: () => import("@/views/DashBoard.vue"),
+      redirect: "/mapboard",
       children: [],
     },
   ],
 });
-
 //路由守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   const token = storageUtils.getItem("user_token");
   if (token) {
     if (to.path === "/login") {
@@ -33,6 +35,13 @@ router.beforeEach((to, from, next) => {
         path: "/dashboard",
       });
       return;
+    }
+    const routerStore = useRouterStore();
+    const { TreeMenuData } = storeToRefs(routerStore);
+    const { getMenuData } = routerStore;
+    if (TreeMenuData.value.length === 0) {
+      await getMenuData();
+      next(to.fullPath);
     }
     next();
   } else {

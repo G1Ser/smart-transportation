@@ -2,7 +2,7 @@
     <dv-border-box-9 style="height: 1075px">
         <div class="aside">
             <el-menu active-text-color="#ffd04b" background-color="#96C6F0" :default-active="DefaultActive"
-                text-color="#fff" @select="handleSelect" router>
+                text-color="#fff" router>
                 <TreeMenu :menu-data="TreeMenuData" />
             </el-menu>
         </div>
@@ -11,23 +11,19 @@
 
 <script lang="ts" setup>
 import TreeMenu from '@/components/TreeMenu.vue'
-import router from '@/router';
-import { ref, onMounted } from 'vue';
+import { useRoute } from 'vue-router';
+import { ref, watch } from 'vue';
 const DefaultActive = ref<number | string>('');
 import { storeToRefs } from 'pinia';
 import { useRouterStore } from '@/store/router';
 const routerStore = useRouterStore();
 const { TreeMenuData } = storeToRefs(routerStore);
-const { getMenuData } = routerStore;
-const handleSelect = (index, indexPath) => {
-    console.log(index);
-    console.log(indexPath);
-}
-onMounted(async () => {
-    await getMenuData();
-    DefaultActive.value = TreeMenuData.value[0].children.length > 0 ? TreeMenuData.value[0].children[0].path : TreeMenuData.value[0].path;
-    router.push(DefaultActive.value);
-})
+const { getBreadcrumb } = routerStore;
+const route = useRoute()
+watch(() => route.path, () => {
+    DefaultActive.value = route.path
+    getBreadcrumb(route.path)
+}, { immediate: true })
 </script>
 
 <style lang="scss" scoped>

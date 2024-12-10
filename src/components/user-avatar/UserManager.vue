@@ -60,6 +60,7 @@ import Cropper from 'cropperjs';
 import 'cropperjs/dist/cropper.css'
 import UploadImg from '@/assets/img/user-avatar/imgChange.png'
 import InitialAvatar from '@/assets/img/user-avatar/userAvatar.png'
+import { ElMessage } from 'element-plus'
 const formVisible = ref(true);
 const dialogVisible = ref(false);
 const cropVisible = ref(false);
@@ -77,6 +78,14 @@ const fileReader = ref<FileReader | null>(null)
 const handleFileChange = (event: Event) => {
     const input = event.target as HTMLInputElement
     const file = input.files?.[0]
+    if (!file.type.startsWith("image/")) {
+        ElMessage({
+            message: '请上传正确的图片文件！',
+            type: 'error',
+        })
+        resetFileInput()
+        return;
+    }
     fileReader.value = new FileReader()
     fileReader.value.onload = () => {
         cropVisible.value = true;

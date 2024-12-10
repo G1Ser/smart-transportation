@@ -48,6 +48,13 @@ const handleChangeUserInfo = async (nickName, avatarUrl) => {
     if (avatarUrl !== props.avatarUrl) {
         const res = await fetch(avatarUrl);
         const blob = await res.blob();
+        if (blob.size > 2 * 1024 * 1024) {
+            ElMessage({
+                message: '用户头像不能超过2MB！',
+                type: 'error',
+            })
+            return
+        }
         const fileParams: uploadFileParam = {
             folderName: 'user_avatar',
             file: blob
