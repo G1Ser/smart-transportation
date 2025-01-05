@@ -8,8 +8,10 @@
 import mapboxgl from 'mapbox-gl'
 import { onMounted } from 'vue';
 import globalConfig from "@/global.config";
-
-onMounted(() => {
+import { getCameraData } from '@/api/mapboard';
+import { bbox } from '@turf/turf';
+import { BBox } from 'geojson';
+onMounted(async () => {
     mapboxgl.accessToken = globalConfig.mapboxToken;
     const map = new mapboxgl.Map({
         container: 'map',
@@ -26,6 +28,24 @@ onMounted(() => {
             "space-color": "#4169e1"
         })
     })
+    const cameraGeoJSON = await getCameraData();
+    const bounds: BBox = bbox(cameraGeoJSON) as [number, number, number, number];
+    map.on('load', () => {
+        map.addSource('camera-data', {
+            type: 'geojson',
+            data: cameraGeoJSON
+        });
+        map.addLayer({
+            id: 'camera-layer',
+            type: 'circle',
+            source: 'camera-data',
+            paint: {
+                'circle-radius': 6,
+                'circle-color': '#FF5733'
+            }
+        })
+    })
+    map.fitBounds(bounds, { padding: 20 });
 })
 </script>
 
